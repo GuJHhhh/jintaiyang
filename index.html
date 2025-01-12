@@ -235,7 +235,7 @@
             </div>
         </section>
 
-        <section class="info-card battery-gallery" data-id="gallery">
+        <section class="info-card battery-gallery">
             <div class="card-header">
                 <i class="fas fa-images"></i>
                 <h2>电池图片</h2>
@@ -300,45 +300,6 @@
             search: window.location.search,
             hash: window.location.hash
         });
-
-        // 获取URL参数
-        function getUrlParameter(name) {
-            // 针对微信浏览器的特殊处理
-            let url = window.location.href;
-            let search = '';
-            
-            // 检查是否是微信浏览器
-            let isWechat = /MicroMessenger/i.test(navigator.userAgent);
-            console.log('是否微信浏览器:', isWechat);
-            
-            if (isWechat) {
-                // 微信浏览器：直接从完整URL中获取参数
-                let questionMarkIndex = url.indexOf('?');
-                if (questionMarkIndex > -1) {
-                    search = url.substring(questionMarkIndex);
-                }
-            } else {
-                // 普通浏览器：使用 location.search
-                search = window.location.search;
-            }
-            
-            console.log('处理后的search:', search);
-            
-            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(search);
-            
-            let value = results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-            console.log('获取到的参数值:', name, '=', value);
-            return value;
-        }
-
-        // 添加多个事件监听，确保在各种情况下都能执行
-        document.addEventListener('DOMContentLoaded', showBatteryInfo);
-        window.addEventListener('load', showBatteryInfo);
-        
-        // 特别添加一个延迟执行，应对某些特殊情况
-        setTimeout(showBatteryInfo, 500);
     </script>
 </body>
 </html> 
