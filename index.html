@@ -2,7 +2,10 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
     <title>浙江长兴金太阳电源有限公司</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
@@ -132,58 +135,70 @@
 
         // 获取URL参数
         function getUrlParameter(name) {
-            // 同时处理正常URL和微信分享URL
-            let search = window.location.search;
-            if (!search && window.location.href.indexOf('?') > -1) {
-                // 针对微信浏览器特殊处理
-                search = window.location.href.split('?')[1];
-                search = '?' + search;
+            // 针对微信浏览器的特殊处理
+            let url = window.location.href;
+            let search = '';
+            
+            // 检查是否是微信浏览器
+            let isWechat = /MicroMessenger/i.test(navigator.userAgent);
+            console.log('是否微信浏览器:', isWechat);
+            
+            if (isWechat) {
+                // 微信浏览器：直接从完整URL中获取参数
+                let questionMarkIndex = url.indexOf('?');
+                if (questionMarkIndex > -1) {
+                    search = url.substring(questionMarkIndex);
+                }
+            } else {
+                // 普通浏览器：使用 location.search
+                search = window.location.search;
             }
+            
+            console.log('处理后的search:', search);
             
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
             var results = regex.exec(search);
-            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            
+            let value = results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+            console.log('获取到的参数值:', name, '=', value);
+            return value;
         }
 
         // 显示对应ID的电池信息
         function showBatteryInfo() {
             const id = getUrlParameter('id');
-            console.log('当前ID:', id); // 添加调试日志
-            console.log('当前URL:', window.location.href); // 添加调试日志
+            console.log('当前ID:', id);
+            console.log('当前完整URL:', window.location.href);
             
             const batteryInfos = document.querySelectorAll('.battery-info');
             
-            // 隐藏所有电池信息
+            // 先显示所有信息（默认状态）
             batteryInfos.forEach(info => {
-                info.style.display = 'none';
+                info.style.display = 'block';
             });
 
-            // 显示对应ID的电池信息
+            // 如果有ID参数，则只显示对应的信息
             if (id) {
-                const targetInfo = document.querySelector(`.battery-info[data-id="${id}"]`);
-                if (targetInfo) {
-                    targetInfo.style.display = 'block';
-                    console.log('找到对应电池信息，已显示'); // 添加调试日志
-                } else {
-                    console.log('未找到对应ID的电池信息:', id); // 添加调试日志
-                    // 如果没找到对应ID的信息，显示所有信息
-                    batteryInfos.forEach(info => {
-                        info.style.display = 'block';
-                    });
-                }
-            } else {
-                // 如果没有ID参数，显示所有电池信息
                 batteryInfos.forEach(info => {
-                    info.style.display = 'block';
+                    if (info.getAttribute('data-id') === id) {
+                        info.style.display = 'block';
+                        info.classList.add('show');
+                        console.log('显示ID为', id, '的电池信息');
+                    } else {
+                        info.style.display = 'none';
+                        info.classList.remove('show');
+                    }
                 });
             }
         }
 
-        // 确保在DOM加载完成后执行
+        // 添加多个事件监听，确保在各种情况下都能执行
         document.addEventListener('DOMContentLoaded', showBatteryInfo);
-        // 同时也监听window.onload事件
         window.addEventListener('load', showBatteryInfo);
+        
+        // 特别添加一个延迟执行，应对某些特殊情况
+        setTimeout(showBatteryInfo, 500);
     </script>
 </body>
 </html> 
