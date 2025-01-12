@@ -187,4 +187,38 @@ function handleImageError(img) {
 
 // 初始化图片错误处理
 const images = document.querySelectorAll('img');
-images.forEach(handleImageError); 
+images.forEach(handleImageError);
+
+// 防止iOS橡皮筋效果
+document.body.addEventListener('touchmove', function(e) {
+    if (e.target.classList.contains('gallery-slider') || 
+        e.target.classList.contains('company-slider')) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// 优化图片加载
+document.addEventListener('DOMContentLoaded', function() {
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.loading = 'lazy'; // 启用懒加载
+        img.decoding = 'async'; // 异步解码
+    });
+});
+
+// 优化触摸事件
+let touchStartY = 0;
+document.addEventListener('touchstart', function(e) {
+    touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchmove', function(e) {
+    const touchY = e.touches[0].clientY;
+    const dy = touchY - touchStartY;
+    
+    // 如果是在顶部向下拉或底部向上拉，阻止默认行为
+    if ((window.scrollY <= 0 && dy > 0) || 
+        (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight && dy < 0)) {
+        e.preventDefault();
+    }
+}, { passive: false }); 

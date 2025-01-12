@@ -26,6 +26,68 @@
                 padding: 10px;
             }
         }
+        
+        /* 添加以下移动端优化样式 */
+        /* 防止图片拖拽 */
+        img {
+            -webkit-user-drag: none;
+            user-drag: none;
+            -webkit-touch-callout: none;
+            pointer-events: none;
+        }
+        
+        /* 优化移动端滚动 */
+        body {
+            -webkit-overflow-scrolling: touch;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+        
+        /* 优化图片容器 */
+        .gallery-slider,
+        .company-slider {
+            touch-action: pan-y pinch-zoom;
+            -webkit-overflow-scrolling: touch;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 针对移动端的其他优化 */
+        @media screen and (max-width: 768px) {
+            .battery-info {
+                margin: 10px 0;
+                padding: 10px;
+            }
+            
+            /* 优化卡片间距 */
+            .info-card {
+                margin-bottom: 15px;
+                -webkit-transform: translateZ(0);
+                transform: translateZ(0);
+            }
+            
+            /* 优化图片展示 */
+            .gallery-item img,
+            .company-item img {
+                width: 100%;
+                height: auto;
+                display: block;
+                max-height: 300px;
+                object-fit: cover;
+            }
+            
+            /* 减少不必要的动画效果 */
+            * {
+                -webkit-tap-highlight-color: transparent;
+            }
+            
+            /* 优化滚动容器 */
+            .main-content {
+                -webkit-overflow-scrolling: touch;
+                overflow-y: auto;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
