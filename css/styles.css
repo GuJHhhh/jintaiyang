@@ -1,0 +1,26 @@
+.battery-info-section {
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 800px;
+}
+
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 4px;
+    text-align: center;
+}
+
+.battery-details {
+    background-color: #f5f5f5;
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.battery-details p {
+    margin: 10px 0;
+    font-size: 16px;
+} 

@@ -1,11 +1,68 @@
+// 在文件顶部添加电池数据配置
+const batteryData = {
+    '12345': {
+        name: '工业级锂电池',
+        capacity: '100Ah',
+        voltage: '12.8V',
+        lifecycle: '>2000次',
+        type: '锂电池系列'
+    },
+    '12346': {
+        name: '家用储能电池',
+        capacity: '200Ah',
+        voltage: '24V',
+        lifecycle: '>3000次',
+        type: '磷酸铁锂电池'
+    }
+    // 可以添加更多电池配置
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-    // 初始化滑动组件
+    // 获取并处理URL参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const batteryId = urlParams.get('id');
+    
+    if (batteryId) {
+        displayBatteryInfo(batteryId);
+    }
+    
+    // 原有的初始化代码
     initializeSliders();
-    // 添加触摸反馈
     addTouchFeedback();
-    // 添加滚动动画
     addScrollAnimations();
 });
+
+// 添加显示电池信息的函数
+function displayBatteryInfo(batteryId) {
+    const battery = batteryData[batteryId];
+    if (!battery) {
+        showError('未找到该电池信息');
+        return;
+    }
+
+    const batteryInfoSection = document.getElementById('battery-info');
+    if (batteryInfoSection) {
+        batteryInfoSection.innerHTML = `
+            <div class="info-card">
+                <h2>${battery.name}</h2>
+                <div class="battery-details">
+                    <p><strong>类型:</strong> ${battery.type}</p>
+                    <p><strong>容量:</strong> ${battery.capacity}</p>
+                    <p><strong>电压:</strong> ${battery.voltage}</p>
+                    <p><strong>循环寿命:</strong> ${battery.lifecycle}</p>
+                </div>
+            </div>
+        `;
+    }
+}
+
+// 添加错误显示函数
+function showError(message) {
+    const errorDiv = document.createElement('div');
+    errorDiv.className = 'error-message';
+    errorDiv.textContent = message;
+    document.body.insertBefore(errorDiv, document.body.firstChild);
+}
 
 // 初始化图片滑动组件
 function initializeSliders() {
