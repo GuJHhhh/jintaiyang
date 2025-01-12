@@ -221,4 +221,47 @@ document.addEventListener('touchmove', function(e) {
         (window.scrollY + window.innerHeight >= document.documentElement.scrollHeight && dy < 0)) {
         e.preventDefault();
     }
-}, { passive: false }); 
+}, { passive: false });
+
+// 修改 showBatteryInfo 函数
+function showBatteryInfo() {
+    const id = getUrlParameter('id');
+    console.log('当前ID:', id);
+    console.log('当前完整URL:', window.location.href);
+    
+    const batteryInfos = document.querySelectorAll('.battery-info');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    
+    // 先显示所有信息（默认状态）
+    batteryInfos.forEach(info => {
+        info.style.display = 'block';
+    });
+    galleryItems.forEach(item => {
+        item.style.display = 'block';
+    });
+
+    // 如果有ID参数，则只显示对应的信息和图片
+    if (id) {
+        // 控制电池信息显示
+        batteryInfos.forEach(info => {
+            if (info.getAttribute('data-id') === id) {
+                info.style.display = 'block';
+                info.classList.add('show');
+                console.log('显示ID为', id, '的电池信息');
+            } else {
+                info.style.display = 'none';
+                info.classList.remove('show');
+            }
+        });
+
+        // 控制图片显示
+        galleryItems.forEach(item => {
+            if (item.getAttribute('data-id') === id) {
+                item.style.display = 'block';
+                console.log('显示ID为', id, '的电池图片');
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+} 

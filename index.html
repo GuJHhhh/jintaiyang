@@ -88,6 +88,53 @@
                 padding: 10px;
             }
         }
+        
+        /* 添加图片显示相关样式 */
+        .gallery-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            gap: 15px;
+            padding: 10px;
+        }
+
+        .gallery-item {
+            flex: 0 0 auto;
+            width: 100%;
+            scroll-snap-align: start;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .gallery-item p {
+            padding: 10px;
+            margin: 0;
+            text-align: center;
+            background: #f8f9fa;
+            font-weight: 500;
+        }
+
+        /* 针对移动端的优化 */
+        @media screen and (max-width: 768px) {
+            .gallery-slider {
+                gap: 10px;
+                padding: 5px;
+            }
+
+            .gallery-item img {
+                height: 150px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -135,12 +182,12 @@
                 <h2>电池图片</h2>
             </div>
             <div class="gallery-slider">
-                <div class="gallery-item">
-                    <img src="images/industrial-battery.jpg" alt="电池产品1">
+                <div class="gallery-item" data-id="12345">
+                    <img src="images/industrial-battery.jpg" alt="工业级锂电池">
                     <p>工业级锂电池</p>
                 </div>
-                <div class="gallery-item">
-                    <img src="images/home-battery.jpg" alt="电池产品2">
+                <div class="gallery-item" data-id="12346">
+                    <img src="images/home-battery.jpg" alt="家用储能电池">
                     <p>家用储能电池</p>
                 </div>
             </div>
