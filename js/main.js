@@ -18,27 +18,32 @@ const batteryData = {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    // 获取并处理URL参数
+    // 获取URL参数
     const urlParams = new URLSearchParams(window.location.search);
     const batteryId = urlParams.get('id');
     
-    const batteryInfoContent = document.querySelector('.battery-info .card-content');
-    
-    if (batteryId && batteryData[batteryId]) {
-        // 如果有指定电池ID，只显示该电池信息
-        displayBatteryInfo(batteryId);
-    } else if (!batteryId) {
-        // 如果没有指定电池ID，显示所有电池信息
-        displayAllBatteries();
+    // 控制电池图片显示
+    const batteryImages = document.querySelectorAll('.battery-image');
+    if (batteryId) {
+        batteryImages.forEach(image => {
+            if (image.getAttribute('data-id') === batteryId) {
+                image.style.display = 'block';
+            } else {
+                image.style.display = 'none';
+            }
+        });
     } else {
-        // 如果电池ID无效，显示错误信息
-        showError('未找到该电池信息');
+        // 如果没有ID参数，显示所有图片
+        batteryImages.forEach(image => {
+            image.style.display = 'block';
+        });
     }
-    
-    // 原有的初始化代码
-    initializeSliders();
-    addTouchFeedback();
-    addScrollAnimations();
+});
+
+// 原有的初始化代码
+initializeSliders();
+addTouchFeedback();
+addScrollAnimations();
 });
 
 // 显示单个电池信息
