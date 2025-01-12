@@ -6,6 +6,11 @@
     <title>浙江长兴金太阳电源有限公司</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
+    <style>
+        .battery-info {
+            display: none; /* 默认隐藏所有电池信息 */
+        }
+    </style>
 </head>
 <body>
     <header class="header">
@@ -94,5 +99,44 @@
     </footer>
 
     <script src="js/main.js"></script>
+
+    <script>
+        // 获取URL参数
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // 显示对应ID的电池信息
+        function showBatteryInfo() {
+            const id = getUrlParameter('id');
+            const batteryInfos = document.querySelectorAll('.battery-info');
+            
+            // 隐藏所有电池信息
+            batteryInfos.forEach(info => {
+                info.style.display = 'none';
+            });
+
+            // 显示对应ID的电池信息
+            if (id) {
+                const targetInfo = document.querySelector(`.battery-info[data-id="${id}"]`);
+                if (targetInfo) {
+                    targetInfo.style.display = 'block';
+                } else {
+                    console.log('未找到对应ID的电池信息');
+                }
+            } else {
+                // 如果没有ID参数，显示所有电池信息
+                batteryInfos.forEach(info => {
+                    info.style.display = 'block';
+                });
+            }
+        }
+
+        // 页面加载时执行
+        window.onload = showBatteryInfo;
+    </script>
 </body>
 </html> 
