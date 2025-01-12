@@ -231,14 +231,21 @@ function showBatteryInfo() {
     
     const batteryInfos = document.querySelectorAll('.battery-info');
     const galleryItems = document.querySelectorAll('.gallery-item');
+    const batteryGallery = document.querySelector('.battery-gallery');
     
     // 先显示所有信息（默认状态）
-    batteryInfos.forEach(info => {
-        info.style.display = 'block';
-    });
-    galleryItems.forEach(item => {
-        item.style.display = 'block';
-    });
+    if (!id) {
+        batteryInfos.forEach(info => {
+            info.style.display = 'block';
+        });
+        galleryItems.forEach(item => {
+            item.style.display = 'block';
+        });
+        if (batteryGallery) {
+            batteryGallery.style.display = 'block';
+        }
+        return;
+    }
 
     // 如果有ID参数，则只显示对应的信息和图片
     if (id) {
@@ -255,13 +262,16 @@ function showBatteryInfo() {
         });
 
         // 控制图片显示
-        galleryItems.forEach(item => {
-            if (item.getAttribute('data-id') === id) {
-                item.style.display = 'block';
-                console.log('显示ID为', id, '的电池图片');
-            } else {
-                item.style.display = 'none';
-            }
-        });
+        if (batteryGallery) {
+            batteryGallery.style.display = 'block';
+            galleryItems.forEach(item => {
+                if (item.getAttribute('data-id') === id) {
+                    item.style.display = 'block';
+                    console.log('显示ID为', id, '的电池图片');
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
     }
 } 
