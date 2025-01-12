@@ -10,184 +10,168 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/style.css">
     <style>
+        /* 统一卡片样式 */
+        .info-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 15px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #e91e63, #5c6bc0);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-header h2 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .card-content {
+            padding: 15px;
+        }
+
+        /* 电池信息样式 */
         .battery-info {
-            display: none; /* 默认隐藏所有电池信息 */
+            display: none;
         }
-        
-        /* 添加以下样式确保内容可见性 */
+
         .battery-info.show {
-            display: block !important;
+            display: block;
         }
-        
-        /* 针对微信浏览器的特殊处理 */
-        @media screen and (max-width: 768px) {
-            .battery-info {
-                margin: 10px 0;
-                padding: 10px;
-            }
+
+        .battery-info .info-item {
+            padding: 0;
         }
-        
-        /* 添加以下移动端优化样式 */
-        /* 防止图片拖拽 */
-        img {
-            -webkit-user-drag: none;
-            user-drag: none;
-            -webkit-touch-callout: none;
-            pointer-events: none;
+
+        .battery-info .info-item h3 {
+            color: #333;
+            margin: 0 0 10px 0;
+            font-size: 16px;
         }
-        
-        /* 优化移动端滚动 */
-        body {
-            -webkit-overflow-scrolling: touch;
-            overflow-y: auto;
-            overscroll-behavior: contain;
+
+        .battery-info .info-item ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
         }
-        
-        /* 优化图片容器 */
+
+        .battery-info .info-item li {
+            padding: 5px 0;
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* 图片展示样式 */
         .gallery-slider,
         .company-slider {
-            touch-action: pan-y pinch-zoom;
-            -webkit-overflow-scrolling: touch;
-            overflow: hidden;
-            position: relative;
-        }
-        
-        /* 针对移动端的其他优化 */
-        @media screen and (max-width: 768px) {
-            .battery-info {
-                margin: 10px 0;
-                padding: 10px;
-            }
-            
-            /* 优化卡片间距 */
-            .info-card {
-                margin-bottom: 15px;
-                -webkit-transform: translateZ(0);
-                transform: translateZ(0);
-            }
-            
-            /* 优化图片展示 */
-            .gallery-item img,
-            .company-item img {
-                width: 100%;
-                height: auto;
-                display: block;
-                max-height: 300px;
-                object-fit: cover;
-            }
-            
-            /* 减少不必要的动画效果 */
-            * {
-                -webkit-tap-highlight-color: transparent;
-            }
-            
-            /* 优化滚动容器 */
-            .main-content {
-                -webkit-overflow-scrolling: touch;
-                overflow-y: auto;
-                padding: 10px;
-            }
-        }
-        
-        /* 添加图片显示相关样式 */
-        .gallery-slider {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
             gap: 15px;
-            padding: 10px;
+            padding: 15px;
         }
 
-        .gallery-item {
-            flex: 0 0 auto;
-            width: 100%;
+        .gallery-item,
+        .company-item {
+            flex: 0 0 calc(100% - 30px);
             scroll-snap-align: start;
             border-radius: 8px;
             overflow: hidden;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            background: #fff;
         }
 
-        .gallery-item img {
+        .gallery-item img,
+        .company-item img {
             width: 100%;
             height: 200px;
             object-fit: cover;
             display: block;
         }
 
-        .gallery-item p {
+        .gallery-item p,
+        .company-item p {
             padding: 10px;
             margin: 0;
             text-align: center;
             background: #f8f9fa;
-            font-weight: 500;
+            font-size: 14px;
+            color: #333;
         }
 
-        /* 针对移动端的优化 */
+        /* 链接样式 */
+        .links-container {
+            display: flex;
+            gap: 15px;
+            padding: 15px;
+        }
+
+        .link-item {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        /* 移动端优化 */
         @media screen and (max-width: 768px) {
-            .gallery-slider {
+            .info-card {
+                margin: 10px;
+            }
+
+            .card-header {
+                padding: 12px;
+            }
+
+            .card-content {
+                padding: 12px;
+            }
+
+            .gallery-slider,
+            .company-slider {
+                padding: 10px;
                 gap: 10px;
-                padding: 5px;
             }
 
-            .gallery-item img {
-                height: 150px;
-            }
-        }
-
-        /* 添加移动端特定样式 */
-        @media screen and (max-width: 768px) {
-            .battery-info {
-                margin: 15px;
-                padding: 15px;
-                background: #fff;
-                border-radius: 10px;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            .gallery-item,
+            .company-item {
+                flex: 0 0 calc(100% - 20px);
             }
 
-            .battery-info .card-content {
-                margin-top: 10px;
+            .gallery-item img,
+            .company-item img {
+                height: 180px;
             }
 
-            .battery-info .info-item {
-                padding: 10px;
+            /* 防止图片拖拽 */
+            img {
+                -webkit-user-drag: none;
+                user-drag: none;
+                -webkit-touch-callout: none;
+                pointer-events: none;
             }
 
-            .battery-info .info-item h3 {
-                margin-bottom: 10px;
-                color: #333;
+            /* 优化滚动 */
+            body {
+                -webkit-overflow-scrolling: touch;
+                overflow-y: auto;
+                overscroll-behavior: contain;
             }
 
-            .battery-info .info-item ul {
-                list-style: none;
-                padding: 0;
-                margin: 0;
-            }
-
-            .battery-info .info-item li {
-                padding: 5px 0;
-                color: #666;
-            }
-
-            /* 优化图片显示 */
-            .gallery-item {
-                margin: 10px 15px;
-                border-radius: 10px;
-                overflow: hidden;
-            }
-
-            .gallery-item img {
-                width: 100%;
-                height: auto;
-                display: block;
-            }
-
-            .gallery-item p {
-                padding: 10px;
-                margin: 0;
-                background: #f8f9fa;
-                text-align: center;
+            .main-content {
+                padding: 10px 0;
             }
         }
     </style>
