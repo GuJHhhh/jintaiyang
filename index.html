@@ -10,6 +10,19 @@
         .battery-info {
             display: none; /* 默认隐藏所有电池信息 */
         }
+        
+        /* 添加以下样式确保内容可见性 */
+        .battery-info.show {
+            display: block !important;
+        }
+        
+        /* 针对微信浏览器的特殊处理 */
+        @media screen and (max-width: 768px) {
+            .battery-info {
+                margin: 10px 0;
+                padding: 10px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -110,17 +123,35 @@
     <script src="js/main.js"></script>
 
     <script>
+        console.log('页面环境信息：', {
+            userAgent: navigator.userAgent,
+            url: window.location.href,
+            search: window.location.search,
+            hash: window.location.hash
+        });
+
         // 获取URL参数
         function getUrlParameter(name) {
+            // 同时处理正常URL和微信分享URL
+            let search = window.location.search;
+            if (!search && window.location.href.indexOf('?') > -1) {
+                // 针对微信浏览器特殊处理
+                search = window.location.href.split('?')[1];
+                search = '?' + search;
+            }
+            
             name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
             var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-            var results = regex.exec(location.search);
+            var results = regex.exec(search);
             return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
         }
 
         // 显示对应ID的电池信息
         function showBatteryInfo() {
             const id = getUrlParameter('id');
+            console.log('当前ID:', id); // 添加调试日志
+            console.log('当前URL:', window.location.href); // 添加调试日志
+            
             const batteryInfos = document.querySelectorAll('.battery-info');
             
             // 隐藏所有电池信息
@@ -133,8 +164,13 @@
                 const targetInfo = document.querySelector(`.battery-info[data-id="${id}"]`);
                 if (targetInfo) {
                     targetInfo.style.display = 'block';
+                    console.log('找到对应电池信息，已显示'); // 添加调试日志
                 } else {
-                    console.log('未找到对应ID的电池信息');
+                    console.log('未找到对应ID的电池信息:', id); // 添加调试日志
+                    // 如果没找到对应ID的信息，显示所有信息
+                    batteryInfos.forEach(info => {
+                        info.style.display = 'block';
+                    });
                 }
             } else {
                 // 如果没有ID参数，显示所有电池信息
@@ -144,8 +180,10 @@
             }
         }
 
-        // 页面加载时执行
-        window.onload = showBatteryInfo;
+        // 确保在DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', showBatteryInfo);
+        // 同时也监听window.onload事件
+        window.addEventListener('load', showBatteryInfo);
     </script>
 </body>
 </html> 
