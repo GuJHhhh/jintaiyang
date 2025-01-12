@@ -22,8 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const urlParams = new URLSearchParams(window.location.search);
     const batteryId = urlParams.get('id');
     
-    if (batteryId) {
+    const batteryInfoContent = document.querySelector('.battery-info .card-content');
+    
+    if (batteryId && batteryData[batteryId]) {
+        // 如果有指定电池ID，只显示该电池信息
         displayBatteryInfo(batteryId);
+    } else if (!batteryId) {
+        // 如果没有指定电池ID，显示所有电池信息
+        displayAllBatteries();
+    } else {
+        // 如果电池ID无效，显示错误信息
+        showError('未找到该电池信息');
     }
     
     // 原有的初始化代码
@@ -32,15 +41,11 @@ document.addEventListener('DOMContentLoaded', () => {
     addScrollAnimations();
 });
 
-// 添加显示电池信息的函数
+// 显示单个电池信息
 function displayBatteryInfo(batteryId) {
     const battery = batteryData[batteryId];
-    if (!battery) {
-        showError('未找到该电池信息');
-        return;
-    }
-
     const batteryInfoContent = document.querySelector('.battery-info .card-content');
+    
     if (batteryInfoContent) {
         batteryInfoContent.innerHTML = `
             <div class="info-item">
@@ -49,6 +54,28 @@ function displayBatteryInfo(batteryId) {
                 <p>容量: ${battery.capacity}</p>
                 <p>电压: ${battery.voltage}</p>
                 <p>循环寿命: ${battery.lifecycle}</p>
+            </div>
+        `;
+    }
+}
+
+// 显示所有电池信息
+function displayAllBatteries() {
+    const batteryInfoContent = document.querySelector('.battery-info .card-content');
+    
+    if (batteryInfoContent) {
+        batteryInfoContent.innerHTML = `
+            <div class="info-item">
+                <h3>锂电池系列</h3>
+                <p>容量: 100Ah</p>
+                <p>电压: 12.8V</p>
+                <p>循环寿命: >2000次</p>
+            </div>
+            <div class="info-item">
+                <h3>磷酸铁锂电池</h3>
+                <p>容量: 200Ah</p>
+                <p>电压: 24V</p>
+                <p>循环寿命: >3000次</p>
             </div>
         `;
     }
