@@ -40,17 +40,15 @@ function displayBatteryInfo(batteryId) {
         return;
     }
 
-    const batteryInfoSection = document.getElementById('battery-info');
-    if (batteryInfoSection) {
-        batteryInfoSection.innerHTML = `
-            <div class="info-card">
-                <h2>${battery.name}</h2>
-                <div class="battery-details">
-                    <p><strong>类型:</strong> ${battery.type}</p>
-                    <p><strong>容量:</strong> ${battery.capacity}</p>
-                    <p><strong>电压:</strong> ${battery.voltage}</p>
-                    <p><strong>循环寿命:</strong> ${battery.lifecycle}</p>
-                </div>
+    const batteryInfoContent = document.querySelector('.battery-info .card-content');
+    if (batteryInfoContent) {
+        batteryInfoContent.innerHTML = `
+            <div class="info-item">
+                <h3>${battery.name}</h3>
+                <p>类型: ${battery.type}</p>
+                <p>容量: ${battery.capacity}</p>
+                <p>电压: ${battery.voltage}</p>
+                <p>循环寿命: ${battery.lifecycle}</p>
             </div>
         `;
     }
