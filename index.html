@@ -274,34 +274,6 @@
             return value;
         }
 
-        // 显示对应ID的电池信息
-        function showBatteryInfo() {
-            const id = getUrlParameter('id');
-            console.log('当前ID:', id);
-            console.log('当前完整URL:', window.location.href);
-            
-            const batteryInfos = document.querySelectorAll('.battery-info');
-            
-            // 先显示所有信息（默认状态）
-            batteryInfos.forEach(info => {
-                info.style.display = 'block';
-            });
-
-            // 如果有ID参数，则只显示对应的信息
-            if (id) {
-                batteryInfos.forEach(info => {
-                    if (info.getAttribute('data-id') === id) {
-                        info.style.display = 'block';
-                        info.classList.add('show');
-                        console.log('显示ID为', id, '的电池信息');
-                    } else {
-                        info.style.display = 'none';
-                        info.classList.remove('show');
-                    }
-                });
-            }
-        }
-
         // 添加多个事件监听，确保在各种情况下都能执行
         document.addEventListener('DOMContentLoaded', showBatteryInfo);
         window.addEventListener('load', showBatteryInfo);
