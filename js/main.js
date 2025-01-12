@@ -43,34 +43,33 @@ function getUrlParameter(name) {
 
 // 初始化函数
 document.addEventListener('DOMContentLoaded', () => {
-    // 使用新的参数获取方式
-    const batteryId = getUrlParameter('id');
-    console.log('当前电池ID:', batteryId); // 添加调试日志
-    
-    // 显示电池信息和图片
-    if (batteryId && batteryData[batteryId]) {
-        console.log('显示指定电池信息:', batteryId); // 添加调试日志
-        // 如果有指定电池ID，只显示该电池信息
-        displayBatteryInfo(batteryId);
-        // 控制图片显示
-        const galleryItems = document.querySelectorAll('.gallery-item');
+    // 获取URL参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const batteryId = urlParams.get('id');
+    console.log('当前电池ID:', batteryId);
+
+    // 获取所有电池信息和图片元素
+    const batteryInfos = document.querySelectorAll('.battery-info');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    if (batteryId) {
+        console.log('显示指定电池信息:', batteryId);
+        // 显示对应的电池信息
+        batteryInfos.forEach(info => {
+            const infoId = info.getAttribute('data-id');
+            info.style.display = infoId === batteryId ? 'block' : 'none';
+        });
+
+        // 显示对应的电池图片
         galleryItems.forEach(item => {
-            if (item.getAttribute('data-id') === batteryId) {
-                item.style.display = 'block';
-                console.log('显示电池图片:', batteryId); // 添加调试日志
-            } else {
-                item.style.display = 'none';
-            }
+            const itemId = item.getAttribute('data-id');
+            item.style.display = itemId === batteryId ? 'block' : 'none';
         });
     } else {
-        console.log('显示所有电池信息'); // 添加调试日志
-        // 如果没有指定电池ID，显示所有电池信息
-        displayAllBatteries();
-        // 显示所有图片
-        const galleryItems = document.querySelectorAll('.gallery-item');
-        galleryItems.forEach(item => {
-            item.style.display = 'block';
-        });
+        console.log('显示所有电池信息');
+        // 显示所有电池信息和图片
+        batteryInfos.forEach(info => info.style.display = 'block');
+        galleryItems.forEach(item => item.style.display = 'block');
     }
 
     // 初始化其他功能

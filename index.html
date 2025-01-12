@@ -135,6 +135,61 @@
                 height: 150px;
             }
         }
+
+        /* 添加移动端特定样式 */
+        @media screen and (max-width: 768px) {
+            .battery-info {
+                margin: 15px;
+                padding: 15px;
+                background: #fff;
+                border-radius: 10px;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            }
+
+            .battery-info .card-content {
+                margin-top: 10px;
+            }
+
+            .battery-info .info-item {
+                padding: 10px;
+            }
+
+            .battery-info .info-item h3 {
+                margin-bottom: 10px;
+                color: #333;
+            }
+
+            .battery-info .info-item ul {
+                list-style: none;
+                padding: 0;
+                margin: 0;
+            }
+
+            .battery-info .info-item li {
+                padding: 5px 0;
+                color: #666;
+            }
+
+            /* 优化图片显示 */
+            .gallery-item {
+                margin: 10px 15px;
+                border-radius: 10px;
+                overflow: hidden;
+            }
+
+            .gallery-item img {
+                width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            .gallery-item p {
+                padding: 10px;
+                margin: 0;
+                background: #f8f9fa;
+                text-align: center;
+            }
+        }
     </style>
 </head>
 <body>
@@ -154,9 +209,11 @@
             <div class="card-content">
                 <div class="info-item">
                     <h3>锂电池系列</h3>
-                    <p>容量: 100Ah</p>
-                    <p>电压: 12.8V</p>
-                    <p>循环寿命: >2000次</p>
+                    <ul>
+                        <li>容量: 100Ah</li>
+                        <li>电压: 12.8V</li>
+                        <li>循环寿命: >2000次</li>
+                    </ul>
                 </div>
             </div>
         </section>
@@ -169,9 +226,11 @@
             <div class="card-content">
                 <div class="info-item">
                     <h3>磷酸铁锂电池</h3>
-                    <p>容量: 200Ah</p>
-                    <p>电压: 24V</p>
-                    <p>循环寿命: >3000次</p>
+                    <ul>
+                        <li>容量: 200Ah</li>
+                        <li>电压: 24V</li>
+                        <li>循环寿命: >3000次</li>
+                    </ul>
                 </div>
             </div>
         </section>
