@@ -1,42 +1,45 @@
 // 添加扫码功能
 function initQRCodeScanner() {
     const scanButton = document.querySelector('.scan-btn');
+    const scannerOverlay = document.querySelector('.scanner-overlay');
+    const closeButton = document.querySelector('.close-scanner');
+    const video = document.getElementById('scanner-video');
+    let scanning = false;
     
     scanButton.addEventListener('click', async () => {
+        scannerOverlay.style.display = 'flex';
         try {
-            // 请求摄像头权限
-            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                } 
+            });
             
-            // 创建视频元素
-            const videoElement = document.createElement('video');
-            const scannerContainer = document.createElement('div');
-            scannerContainer.className = 'scanner-container';
+            video.srcObject = stream;
+            await video.play();
+            scanning = true;
             
-            videoElement.srcObject = stream;
-            scannerContainer.appendChild(videoElement);
-            document.body.appendChild(scannerContainer);
-            
-            // 开始视频播放
-            await videoElement.play();
-            
-            // 使用jsQR库进行扫描
             function scan() {
+                if (!scanning) return;
+                
                 const canvas = document.createElement('canvas');
-                canvas.width = videoElement.videoWidth;
-                canvas.height = videoElement.videoHeight;
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
                 const ctx = canvas.getContext('2d');
-                ctx.drawImage(videoElement, 0, 0);
+                ctx.drawImage(video, 0, 0);
                 
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
                 const code = jsQR(imageData.data, imageData.width, imageData.height);
                 
                 if (code) {
-                    // 扫描成功，处理结果
-                    alert('扫描结果: ' + code.data);
+                    // 扫描成功
+                    scanning = false;
                     stream.getTracks().forEach(track => track.stop());
-                    scannerContainer.remove();
+                    scannerOverlay.style.display = 'none';
+                    handleQRCode(code.data);
                 } else {
-                    // 继续扫描
                     requestAnimationFrame(scan);
                 }
             }
@@ -48,6 +51,37 @@ function initQRCodeScanner() {
             alert('无法访问摄像头，请确保已授予权限');
         }
     });
+    
+    closeButton.addEventListener('click', () => {
+        scanning = false;
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+        }
+        scannerOverlay.style.display = 'none';
+    });
+    
+    // 处理扫描到的二维码
+    function handleQRCode(data) {
+        try {
+            const qrData = JSON.parse(data);
+            if (qrData.id) {
+                // 如果是产品二维码，显示对应的产品信息
+                const productSection = document.querySelector(`.battery-info[data-id="${qrData.id}"]`);
+                if (productSection) {
+                    productSection.scrollIntoView({ behavior: 'smooth' });
+                    productSection.classList.add('highlight');
+                    setTimeout(() => productSection.classList.remove('highlight'), 2000);
+                }
+            }
+        } catch (e) {
+            // 如果不是JSON格式，可能是普通链接
+            if (data.startsWith('http')) {
+                window.open(data, '_blank');
+            } else {
+                alert('扫描结果: ' + data);
+            }
+        }
+    }
 }
 
 // 初始化扫码功能

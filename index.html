@@ -189,6 +189,25 @@
         </button>
     </header>
 
+    <!-- 添加扫码界面 -->
+    <div class="scanner-overlay" style="display: none;">
+        <div class="scanner-container">
+            <div class="scanner-header">
+                <h3>扫描二维码</h3>
+                <button class="close-scanner">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="scanner-content">
+                <div class="camera-container">
+                    <video id="scanner-video" playsinline></video>
+                    <div class="scanning-area"></div>
+                </div>
+                <div class="scanner-message">请将二维码对准框内</div>
+            </div>
+        </div>
+    </div>
+
     <main class="main-content">
         <section class="info-card battery-info" data-id="12345">
             <div class="card-header">
