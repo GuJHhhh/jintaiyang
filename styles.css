@@ -129,4 +129,20 @@
     text-align: center;
     margin-top: 15px;
     color: #666;
+}
+
+@keyframes highlight {
+    0% { background-color: #fff; }
+    50% { background-color: #ffeb3b; }
+    100% { background-color: #fff; }
+}
+
+/* 默认隐藏所有电池信息 */
+.battery-info {
+    display: none;
+}
+
+/* 显示第一个电池信息作为默认显示 */
+.battery-info:first-of-type {
+    display: block;
 } 

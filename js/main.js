@@ -134,3 +134,148 @@ images.forEach(img => {
     img.loading = 'lazy';
     img.decoding = 'async';
 });
+
+// 页面初始化和工具函数
+function initPage() {
+    console.log('页面环境信息：', {
+        userAgent: navigator.userAgent,
+        url: window.location.href,
+        search: window.location.search,
+        hash: window.location.hash
+    });
+}
+
+// 添加扫码功能
+function initQRCodeScanner() {
+    console.log('Initializing QR scanner...');
+    // 检查是否支持 getUserMedia
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        console.error('浏览器不支持 getUserMedia API');
+        alert('您的浏览器不支持摄像头功能，请使用现代浏览器或确保使用 HTTPS 访问');
+        return;
+    }
+
+    const scanButton = document.querySelector('.scan-btn');
+    if (!scanButton) {
+        console.error('找不到扫码按钮');
+        return;
+    }
+
+    const scannerOverlay = document.querySelector('.scanner-overlay');
+    const closeButton = document.querySelector('.close-scanner');
+    const video = document.getElementById('scanner-video');
+    let scanning = false;
+    
+    scanButton.addEventListener('click', async () => {
+        console.log('Scan button clicked');
+        console.log('当前协议:', window.location.protocol);
+        scannerOverlay.style.display = 'flex';
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ 
+                video: { 
+                    facingMode: 'environment',
+                    width: { ideal: 1280 },
+                    height: { ideal: 720 }
+                } 
+            });
+            console.log('Camera access granted');
+            
+            video.srcObject = stream;
+            await video.play();
+            scanning = true;
+            
+            function scan() {
+                if (!scanning) return;
+                
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0);
+                
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                const code = jsQR(imageData.data, imageData.width, imageData.height);
+                
+                if (code) {
+                    // 扫描成功
+                    scanning = false;
+                    stream.getTracks().forEach(track => track.stop());
+                    scannerOverlay.style.display = 'none';
+                    handleQRCode(code.data);
+                } else {
+                    requestAnimationFrame(scan);
+                }
+            }
+            
+            requestAnimationFrame(scan);
+            
+        } catch (error) {
+            console.error('扫码出错:', error);
+            alert('无法访问摄像头，请确保已授予权限');
+        }
+    });
+    
+    closeButton.addEventListener('click', () => {
+        scanning = false;
+        if (video.srcObject) {
+            video.srcObject.getTracks().forEach(track => track.stop());
+        }
+        scannerOverlay.style.display = 'none';
+    });
+}
+
+// 处理扫描到的二维码
+function handleQRCode(data) {
+    try {
+        // 尝试解析 URL
+        const url = new URL(data);
+        const id = url.searchParams.get('id');
+        
+        if (id) {
+            // 如果是产品二维码，显示对应的产品信息
+            const productSection = document.querySelector(`.battery-info[data-id="${id}"]`);
+            if (productSection) {
+                // 隐藏所有电池信息
+                document.querySelectorAll('.battery-info').forEach(section => {
+                    section.style.display = 'none';
+                });
+                // 显示对应的电池信息
+                productSection.style.display = 'block';
+                productSection.scrollIntoView({ behavior: 'smooth' });
+                // 添加高亮效果
+                productSection.style.animation = 'highlight 2s';
+            }
+        }
+    } catch (e) {
+        // 如果不是有效的URL，尝试其他格式
+        if (data.startsWith('http')) {
+            window.open(data, '_blank');
+        } else {
+            alert('扫描结果: ' + data);
+        }
+    }
+}
+
+// 页面加载时检查 URL 参数
+function checkUrlParams() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    if (id) {
+        const productSection = document.querySelector(`.battery-info[data-id="${id}"]`);
+        if (productSection) {
+            document.querySelectorAll('.battery-info').forEach(section => {
+                section.style.display = 'none';
+            });
+            productSection.style.display = 'block';
+            productSection.scrollIntoView({ behavior: 'smooth' });
+            productSection.style.animation = 'highlight 2s';
+        }
+    }
+}
+
+// 页面初始化
+document.addEventListener('DOMContentLoaded', function() {
+    initPage();
+    initQRCodeScanner();
+    checkUrlParams();
+});
