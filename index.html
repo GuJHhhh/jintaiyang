@@ -299,14 +299,18 @@
         <p>© 2024 浙江长兴金太阳电源有限公司 版权所有</p>
     </footer>
 
-    <script src="js/main.js"></script>
-
+    <script src="index.js"></script>
     <script>
         console.log('页面环境信息：', {
             userAgent: navigator.userAgent,
             url: window.location.href,
             search: window.location.search,
             hash: window.location.hash
+        });
+
+        // 确保 DOM 加载完成后初始化扫码功能
+        document.addEventListener('DOMContentLoaded', function() {
+            initQRCodeScanner();
         });
     </script>
 </body>

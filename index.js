@@ -1,5 +1,6 @@
 // 添加扫码功能
 function initQRCodeScanner() {
+    console.log('Initializing QR scanner...');
     const scanButton = document.querySelector('.scan-btn');
     const scannerOverlay = document.querySelector('.scanner-overlay');
     const closeButton = document.querySelector('.close-scanner');
@@ -7,6 +8,7 @@ function initQRCodeScanner() {
     let scanning = false;
     
     scanButton.addEventListener('click', async () => {
+        console.log('Scan button clicked');
         scannerOverlay.style.display = 'flex';
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ 
@@ -16,6 +18,7 @@ function initQRCodeScanner() {
                     height: { ideal: 720 }
                 } 
             });
+            console.log('Camera access granted');
             
             video.srcObject = stream;
             await video.play();
