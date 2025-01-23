@@ -161,6 +161,20 @@ body {
     font-size: 0.9rem;
     margin-top: 20px;
     box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.05);
+    width: 100%;
+}
+
+.footer img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.footer p {
+    text-align: center;
+    padding: 15px;
+    font-size: 14px;
+    color: #666;
 }
 
 /* Animations */
@@ -457,4 +471,162 @@ body {
 /* 显示第一个电池信息作为默认显示 */
 .battery-info:first-of-type {
     display: block;
+}
+
+/* 重置和基础样式 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: #fff;
+    color: #333;
+    line-height: 1.6;
+}
+
+/* 顶部标题样式 */
+.header {
+    background-color: #ffcc00;
+    padding: 20px;
+    text-align: center;
+}
+
+.logo-title {
+    max-width: 200px;
+    margin: 0 auto;
+}
+
+.logo {
+    width: 100%;
+    height: auto;
+}
+
+/* 公司简介样式 */
+.company-intro {
+    position: relative;
+}
+
+.full-width-img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.intro-text {
+    padding: 20px;
+    background-color: #fff;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+/* 防伪码查询样式 */
+.verify-code {
+    padding: 20px;
+}
+
+.search-container {
+    margin-bottom: 20px;
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+}
+
+.code-input {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    font-size: 16px;
+    outline: none;
+}
+
+.scan-btn {
+    background: none;
+    border: none;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.verify-items {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    gap: 10px;
+}
+
+.verify-item {
+    padding: 15px;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    text-align: left;
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.verify-item .label {
+    color: #666;
+    font-weight: 500;
+}
+
+.verify-item .value {
+    color: #333;
+    font-weight: 600;
+}
+
+/* 验证成功状态时的值样式 */
+.verify-item.verified .value {
+    color: #4caf50;
+}
+
+/* 错误状态时的值样式 */
+.verify-item.error .value {
+    color: #f44336;
+}
+
+.view-manual {
+    width: 100%;
+    padding: 15px;
+    background-color: #007aff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+/* 产品展示样式 */
+.products {
+    padding: 20px;
+}
+
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+
+.product-img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+/* 响应式调整 */
+@media screen and (max-width: 768px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    
+    .verify-items {
+        grid-template-columns: 1fr;
+    }
 } 
