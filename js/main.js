@@ -6,6 +6,22 @@ function initPage() {
         search: window.location.search,
         hash: window.location.hash
     });
+
+    // 检查URL中的id参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const idFromUrl = urlParams.get('id');
+    if (idFromUrl) {
+        const codeInput = document.getElementById('codeInput');
+        if (codeInput) {
+            codeInput.value = idFromUrl;
+            // 如果数据库中有这个编码，就显示信息
+            if (mockDatabase[idFromUrl]) {
+                updateVerifyInfo(mockDatabase[idFromUrl]);
+            } else {
+                showError('未找到相关产品信息');
+            }
+        }
+    }
 }
 
 // 添加扫码功能
@@ -204,8 +220,11 @@ document.addEventListener('DOMContentLoaded', function() {
         // 实时更新信息
         if (mockDatabase[code]) {
             updateVerifyInfo(mockDatabase[code]);
+            // 更新URL，但不刷新页面
+            const newUrl = new URL(window.location.href);
+            newUrl.searchParams.set('id', code);
+            window.history.pushState({}, '', newUrl);
         } else if (code.length > 0) {
-            // 只有当有输入内容时才显示错误
             showError('未找到相关产品信息');
         }
     });

@@ -411,6 +411,20 @@ body {
     padding: 8px;
 }
 
+.search-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    width: 36px;
+}
+
+.search-icon {
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
+}
+
 .code-input {
     flex: 1;
     border: none;
@@ -424,6 +438,17 @@ body {
     border: none;
     padding: 8px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 36px;
+    width: 36px;
+}
+
+.scan-icon {
+    height: 24px;
+    width: 24px;
+    object-fit: contain;
 }
 
 .verify-items {
